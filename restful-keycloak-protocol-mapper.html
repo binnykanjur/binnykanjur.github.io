@@ -1,0 +1,802 @@
+<!DOCTYPE html><html lang="en"><head>
+
+    <!-- Google tag (gtag.js) -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-YHGENZFX76"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-YHGENZFX76');
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Binny Kanjur - Integrating Custom Keycloak Protocol Mappers with ASP.NET Core Minimal APIs</title>
+    <meta name="description" content="Make your Keycloak tokens better by developing a custom protocol mapper that fetches claims dynamically from an ASP.NET Core Minimal API endpoint. You can follow this guide to set up, configure, and test a RESTful protocol mapper using Docker containers so that your tokens are always up-to-date and have the relevant information.">
+    <meta name="keywords" content="Keycloak Integration, ASP.NET Core API, Docker Compose, Identity Management, Access Token, Protocol Mapper, Containerized Applications, Secure API, Token Claims, Authentication System">
+    <meta name="author" content="Binny Kanjur">
+    
+    <link rel="icon" href="/favico.png">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="http://binnykanjur.com/restful-keycloak-protocol-mapper">
+    <meta property="og:title" content="Integrating Custom Keycloak Protocol Mappers with ASP.NET Core Minimal APIs">
+    <meta property="og:description" content="Make your Keycloak tokens better by developing a custom protocol mapper that fetches claims dynamically from an ASP.NET Core Minimal API endpoint. You can follow this guide to set up, configure, and test a RESTful protocol mapper using Docker containers so that your tokens are always up-to-date and have the relevant information.">
+    <meta property="og:image" content="/favico.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="http://binnykanjur.com/restful-keycloak-protocol-mapper">
+    <meta property="twitter:title" content="Integrating Custom Keycloak Protocol Mappers with ASP.NET Core Minimal APIs">
+    <meta property="twitter:description" content="Make your Keycloak tokens better by developing a custom protocol mapper that fetches claims dynamically from an ASP.NET Core Minimal API endpoint. You can follow this guide to set up, configure, and test a RESTful protocol mapper using Docker containers so that your tokens are always up-to-date and have the relevant information.">
+    <meta property="twitter:image" content="/favico.png">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <link rel="stylesheet" href="css/site.css">
+    <link rel="stylesheet" href="css/carousel.css">
+    <link rel="stylesheet" href="css/syntaxHighlighter.css">
+
+    <script src="js/carousel.js"></script>
+<meta name="generator" content="xSite"></head>
+<body>
+
+    <header>
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a href="/">
+                    <img src="favico.png" style="margin-right:12px;width:32px;height:32px" alt="logo">
+                </a>
+                <a class="navbar-brand" href="/"><b>BINNY</b>KANJUR</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                            <ul class="navbar-nav flex-grow-1">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" href="/">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" href="/xstatic.html">xStatic</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" href="/about.html">About</a>
+                                    </li>
+                            </ul>
+                        </div>
+            </div>
+        </nav>
+    </header>
+
+    <div id="cookieConsent" class="alert alert-info alert-dismissible floatingBottonCookieConsent fade" role="alert">
+        <p>Cookies help us analyze website traffic and improve performance. By using our site, you consent to their use.</p>
+        <button type="button" class="accept-policy close btn btn-outline-primary" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">ACCEPT COOKIES</span>
+        </button>
+    </div>
+
+    
+
+<!-- Post Content Column -->
+
+<div class="container">
+    <article>
+        <div class="row">
+            <div class="col-md-8">
+
+                <!-- Title -->
+                <h1 class="mt-4">Integrating Custom Keycloak Protocol Mappers with ASP.NET Core Minimal APIs</h1>
+
+                    <!-- Author -->
+                    <p class="lead">
+                        June 20, 2024
+                        by
+                        <a href="#">Binny Kanjur</a>
+                    </p>
+                    <hr>
+
+                <!-- Post Content -->
+                <p class="lead">
+                    </p><p><strong>Keycloak</strong> is an open-source identity and access management solution designed to secure applications and services with minimal effort. It offers features like single sign-on, identity brokering, and user federation, making it a powerful tool for managing authentication and authorization.</p>
+<p>In many scenarios, it is necessary to add additional claims to the tokens issued by Keycloak. Claims are pieces of information about a user, such as their tenant, role or permissions. While Keycloak allows adding static claims, there are cases where these claims need to be dynamically retrieved from an external API. By doing so, the token contains the most up-to-date information, ensuring effective enforcement of access policies and seamless integration with external systems.</p>
+<p><strong>Protocol mappers</strong> in Keycloak are used to map user attributes and roles to claims in tokens. They play a crucial role in customizing the information included in tokens. In this article, we will develop a custom RESTful protocol mapper that fetches claims from a configured REST endpoint, allowing dynamic claim retrieval.</p>
+<p>In this article, you will:</p>
+<ul>
+<li>Build a REST endpoint using ASP.NET Core minimal API that will return a collection of customized claims which would be added to the Keycloak token.</li>
+<li>Implement a Custom Protocol Mapper &amp; deploy it to Keycloak.</li>
+<li>Dockerize both ASP.NET Core app &amp; Keycloak; orchestrated by Docker Compose.</li>
+</ul>
+<h2>TL;DR</h2>
+<p>If you're short on time or just want to get your hands dirty quickly, follow these steps to run the complete solution from my GitHub repository. This setup includes Keycloak and an ASP.NET Core Minimal API, all orchestrated via Docker Compose. No extra configuration is needed—just Docker installed on your machine.</p>
+<h3>Prerequisites</h3>
+<ul>
+<li><a href="https://www.docker.com/products/docker-desktop">Docker Community Edition</a>.</li>
+</ul>
+<h3>1. Clone the GitHub repository:</h3>
+<p>If you don't have Git installed, download the source zip <a href="https://github.com/binnykanjur/keycloak-protocol-mapper-sample/archive/refs/heads/main.zip">here</a>.</p>
+<pre><code class="language-Console">git clone https://github.com/binnykanjur/keycloak-protocol-mapper-sample.git
+cd keycloak-rest-protocol-mapper-sample
+</code></pre>
+<h3>2. Start the services with Docker Compose:</h3>
+<pre><code class="language-Console">docker-compose up -d
+</code></pre>
+<h3>3. Login to the Keycloak admin console:</h3>
+<ul>
+<li>Open your browser and go to <a href="http://localhost:5000">http://localhost:5000</a>.</li>
+<li>Login with the credentials:
+<ul>
+<li>Username: admin</li>
+<li>Password: admin</li>
+</ul>
+</li>
+</ul>
+<h3>4. Explore the custom protocol mapper:</h3>
+<p>We will be using the Keycloak admin console to navigate to the configured client and check the claims included in the access token by the custom protocol mapper. A visual guide is provided below. Navigate through the images to see each step.</p>
+<div id="evaluate-pm-images">
+<script>
+	initImageCarousel({
+            images: [
+                { src: 'Media%2Fkcpm-verify-installation.png', header: 'Available Protocol Mppers', text: 'Verify Protocol Mapper Installation' },
+                { src: 'Media%2Fkcpm-client-scopes-evaluate.png', header: 'View Claims', text: '__user__ and role claims returned from the REST endpoint included in the Access Token' }
+            ],
+            showFullscreenButton: true,
+            showCaptions: true
+        });
+</script>
+</div>
+<p>By following these steps, you can quickly get a hands-on experience with the custom protocol mapper and see it in action. For detailed instructions and more information, continue reading the full article below.</p>
+<h2>Setting Up the Development Environment</h2>
+<p>Install the following prerequisites:</p>
+<ul>
+<li><a href="https://dotnet.microsoft.com/download/dotnet/8.0">.NET 8+ SDK</a>.</li>
+<li><a href="https://www.docker.com/products/docker-desktop">Docker Community Edition</a>.</li>
+<li><a href="https://www.microsoft.com/openjdk">Java Development Kit (JDK)</a>.</li>
+<li><a href="https://gradle.org/install/">Gradle</a>.</li>
+<li>A working folder for ASP.NET Core Minimal API, Custom protocol mapper &amp; the docker-compose.yml. In this article, the name <code>keycloak-protocol-mapper-sample</code> is used as the working folder.</li>
+</ul>
+<hr>
+<p>On <strong>Windows 10</strong> or <strong>above</strong>, you can use <a href="https://learn.microsoft.com/en-us/windows/package-manager/winget/">Windows Package Manager</a> to install the prerequisites:</p>
+<ol>
+<li>Install PowerShell, Docker Desktop, .NET 8 &amp; OpenJDK 21:
+<ul>
+<li>Download the <a href="https://raw.githubusercontent.com/binnykanjur/keycloak-protocol-mapper-sample/main/configurations/configuration.dsc.yaml">Winget Configuration File</a>.</li>
+<li>Navigate to the downloaded folder &amp; execute:</li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-Console">winget configure -f configuration.dsc.yaml
+</code></pre>
+<ol start="2">
+<li>Download and Configure Gradle:
+<ul>
+<li>Download the <a href="https://raw.githubusercontent.com/binnykanjur/keycloak-protocol-mapper-sample/main/configurations/setup-gradle.ps1">PowerShell script file</a>.</li>
+<li>Open <strong>PowerShell</strong> in the <code>Administrator</code> mode.</li>
+<li>Navigate to the downloaded folder &amp; execute:</li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-powershell">.\configurations\setup-gradle.ps1
+</code></pre>
+<p>The PowerShell script downloads the Gradle archive, extracts it to <code>c:\Gradle</code> &amp; sets the required environment variable.</p>
+<h2>Creating the ASP.NET Core Minimal API</h2>
+<p>In this section, you will build an ASP.NET Core Minimal API with a GET endpoint /api/v1/claims that receives an objectId query parameter and returns custom claims. The endpoint is simple yet demonstrative of the process required to integrate with Keycloak. In a production environment, these claims could be retrieved from a database or another external source.</p>
+<h3>1. Setting Up the Project</h3>
+<p>Open your terminal, create a working folder (<code>keycloak-protocol-mapper-sample</code>) if you haven't already, and enter it. In the working folder, run the following command to create a new Minimal API project. Navigate into the newly created projects directory.</p>
+<pre><code class="language-Console">dotnet new web -n ClaimsProvider.Api
+cd ClaimsProvider.Api
+</code></pre>
+<h3>2. Defining the Claims Endpoint</h3>
+<p>Open <em>Program.cs</em> &amp; replace the file with the following code that defines a new GET endpoint /api/v1/claims &amp; accepts an objectId query parameter:</p>
+<pre><code class="language-c#">using System.Text.Json.Serialization;
+
+var builder = WebApplication.CreateBuilder(args);
+
+var app = builder.Build();
+
+app.MapGet("/api/v1/claims", (string objectId) =&gt; {
+    return Results.Ok(
+        new ClaimsResponse {
+            UserId = objectId,
+            Role = $"Role_{Random.Shared.Next(1, 100)}"
+        });
+});
+
+app.Run();
+
+internal class ClaimsResponse {
+    [JsonPropertyName("__user__")]
+    public required string UserId { get; set; }
+    public required string Role { get; set; }
+}
+</code></pre>
+<h3>3. Testing the Endpoint</h3>
+<p>Run the application</p>
+<pre><code class="language-Console">dotnet run --urls=http://localhost:8080/
+</code></pre>
+<p>Use a browser to send a GET request to <a href="http://localhost:8080/api/v1/claims?objectId=123">http://localhost:8080/api/v1/claims?objectId=123</a>. You should see a JSON response like below.</p>
+<pre><code class="language-json">{
+    "__user__": "123",
+    "role": "Role_25"
+}
+</code></pre>
+<h3>4. Containerizing the API</h3>
+<p>Create a file named <em>Dockerfile</em> in the directory containing the <em>.csproj</em> and open it in a text editor.</p>
+<p>Here's the code snippet to add to your Dockerfile:</p>
+<pre><code class="language-dockerfile">FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER app
+WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["ClaimsProvider.Api.csproj", "."]
+RUN dotnet restore "./ClaimsProvider.Api.csproj"
+COPY . .
+WORKDIR "/src/."
+RUN dotnet build "./ClaimsProvider.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./ClaimsProvider.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ClaimsProvider.Api.dll"]
+</code></pre>
+<p>With the ClaimsProvider.Api set up and the /api/v1/claims endpoint ready, we have laid the groundwork for integrating custom claims into Keycloak tokens. The next steps will involve creating the custom protocol mapper in Keycloak and configuring it to use this endpoint.</p>
+<h2>Implementing the Custom Protocol Mapper in Keycloak</h2>
+<p>In this section, you will implement a custom protocol mapper and configure it to call our ClaimsProvider.Api to retrieve additional claims.</p>
+<h3>1. Setting Up the Project</h3>
+<ul>
+<li>Begin by creating a new directory called <code>restful-claims-provider</code> in the working directory &amp; enter into it.</li>
+<li>Initialize the project by running <code>gradle init</code> with parameters to generate a Java library.</li>
+<li>Delete the files not required for this article.</li>
+</ul>
+<pre><code class="language-powershell">mkdir restful-claims-provider; cd restful-claims-provider
+
+gradle init --type java-library --dsl kotlin --test-framework junit --package "com.binnykanjur.keycloak.protocolmapper" --project-name restful-claims-provider --no-split-project --no-incubating --use-defaults
+
+Remove-Item -Path "lib\src\test" -Recurse -Force; Remove-Item -Path "lib\src\main\java\com\binnykanjur\keycloak\protocolmapper\Library.java"
+</code></pre>
+<h3>2. Configuring Gradle for the Protocol Mapper</h3>
+<p>Next, lets update the <em>build.gradle.kts</em> file include the necessary dependencies &amp; other configurations.</p>
+<h4>Key Points from build.gradle.kts</h4>
+<ol>
+<li>Java Compatibility:
+<ul>
+<li><strong>sourceCompatibility</strong>: JavaVersion.VERSION_11</li>
+<li><strong>targetCompatibility</strong>: JavaVersion.VERSION_11</li>
+</ul>
+</li>
+<li>Repositories:
+<ul>
+<li><strong>mavenCentral()</strong>: Specifies Maven Central as the repository for dependencies.</li>
+</ul>
+</li>
+<li>Dependencies:
+<ul>
+<li><strong>org.json:json:20240303</strong>: For parsing JSON data.</li>
+<li>Keycloak dependencies for core functionality:
+<ul>
+<li><em>org.keycloak:keycloak-core:25.0.0</em></li>
+<li><em>org.keycloak:keycloak-services:25.0.0</em></li>
+<li><em>org.keycloak:keycloak-server-spi:25.0.0</em></li>
+<li><em>org.keycloak:keycloak-server-spi-private:25.0.0</em></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Tasks:
+<ul>
+<li><strong>copyToLib</strong>: Copies the <code>org.json</code> runtime dependency to the <code>keycloak/providers</code> directory within the working directory.</li>
+<li><strong>jar</strong>: Configures the JAR task to depend on <code>copyToLib</code>, sets destination directory, and names the archive file.</li>
+</ul>
+</li>
+</ol>
+<p>Here's the <code>lib\build.gradle.kts</code> file:</p>
+<pre><code class="language-kotlin">plugins {
+    `java-library`
+}
+
+group = "com.binnykanjur.keycloak.protocolmapper"
+version = "1.0.0"
+description = "Keycloak RESTful Claims Provider"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("org.json:json:20240303")
+    implementation("org.keycloak:keycloak-core:25.0.0")
+    implementation("org.keycloak:keycloak-services:25.0.0")
+    implementation("org.keycloak:keycloak-server-spi:25.0.0")
+    implementation("org.keycloak:keycloak-server-spi-private:25.0.0")
+}
+
+tasks {
+    val copyToLib by creating(Copy::class) {
+        into("$rootDir/../keycloak/providers")
+        from(configurations.runtimeClasspath) {
+            include("json-*")
+        }
+    }
+
+    jar {
+        dependsOn(copyToLib)
+        destinationDirectory = File("$rootDir/../keycloak/providers")
+        archiveFileName.set("${rootProject.name}-${project.version}.jar")
+    }
+}
+</code></pre>
+<p>This configuration ensures that all necessary dependencies are included and prepares the project for building the custom protocol mapper.</p>
+<h3>3. Implementing the Protocol Mapper</h3>
+<ul>
+<li>Create a new Java class that extends <code>org.keycloak.protocol.oidc.mappers.AbstractOIDCProtocolMapper</code> and implements the necessary methods to define your custom mapper and a method to transform the token by adding additional claims.</li>
+<li>Within the mapper, use the ProviderConfigProperty class to define a configuration property for the service URL</li>
+<li>Override setClaim() to make an HTTP request to the service URL, parse the JSON response, and add the retrieved claims to the token.</li>
+</ul>
+<p>Here's the Java code to add to your <code>lib\src\main\java\com\binnykanjur\keycloak\protocolmapper\RESTfulClaimsProvider.java</code> file:</p>
+<pre><code class="language-java">package com.binnykanjur.keycloak.protocolmapper;
+
+import org.keycloak.models.ClientSessionContext;
+import org.keycloak.models.KeycloakSession;
+import org.keycloak.models.ProtocolMapperModel;
+import org.keycloak.models.UserSessionModel;
+import org.keycloak.protocol.oidc.mappers.AbstractOIDCProtocolMapper;
+import org.keycloak.protocol.oidc.mappers.OIDCAccessTokenMapper;
+import org.keycloak.protocol.oidc.mappers.OIDCAttributeMapperHelper;
+import org.keycloak.protocol.oidc.mappers.OIDCIDTokenMapper;
+import org.keycloak.provider.ProviderConfigProperty;
+import org.keycloak.representations.IDToken;
+import org.json.JSONObject;
+import java.io.StringReader;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class RESTfulClaimsProvider extends AbstractOIDCProtocolMapper
+        implements OIDCAccessTokenMapper, OIDCIDTokenMapper {
+
+    private static final List&lt;ProviderConfigProperty&gt; configProperties = new ArrayList&lt;&gt;();
+
+    public static final String INCLUDED_SERVICE_URL = "included.service.url";
+    public static final String INCLUDED_SERVICE_URL_LABEL = "Service Url";
+    public static final String INCLUDED_SERVICE_URL_HELP_TEXT = "Endpoint to get claims from";
+
+    public static final String PROVIDER_ID = "oidc-RESTful-claims-mapper";
+
+    static {
+        ProviderConfigProperty property = new ProviderConfigProperty();
+        property.setName(INCLUDED_SERVICE_URL);
+        property.setLabel(INCLUDED_SERVICE_URL_LABEL);
+        property.setHelpText(INCLUDED_SERVICE_URL_HELP_TEXT);
+        property.setType(ProviderConfigProperty.STRING_TYPE);
+        property.setRequired(true);
+        property.setDefaultValue("");
+        configProperties.add(property);
+
+        OIDCAttributeMapperHelper.addIncludeInTokensConfig(configProperties, RESTfulClaimsProvider.class);
+
+        // Don't include claims in ID Token by default
+        for (ProviderConfigProperty prop : configProperties) {
+            if (OIDCAttributeMapperHelper.INCLUDE_IN_ID_TOKEN.equals(prop.getName())) {
+                prop.setDefaultValue("false");
+            }
+        }
+    }
+
+    @Override
+    public List&lt;ProviderConfigProperty&gt; getConfigProperties() {
+        return configProperties;
+    }
+
+    @Override
+    public String getId() {
+        return PROVIDER_ID;
+    }
+
+    @Override
+    public String getDisplayType() {
+        return "RESTful Claims Provider";
+    }
+
+    @Override
+    public String getDisplayCategory() {
+        return TOKEN_MAPPER_CATEGORY;
+    }
+
+    @Override
+    public String getHelpText() {
+        return "Adds custom claims returned from a call to the Service Url";
+    }
+
+    @Override
+    protected void setClaim(IDToken token, ProtocolMapperModel mappingModel, UserSessionModel userSession,
+            KeycloakSession keycloakSession, ClientSessionContext clientSessionCtx) {
+        String serviceUrl = mappingModel.getConfig().get(INCLUDED_SERVICE_URL);
+        if (serviceUrl == null || serviceUrl.isBlank()) {
+            return;
+        }
+
+        String userId = token.getSubject();
+        if (userId == null) {
+            return;
+        }
+
+        // Fetch data from the remote GET endpoint using the authenticated user's ID
+        Map&lt;String, Object&gt; customClaims = fetchCustomClaimsFromApi(serviceUrl, userId);
+
+        // Add the retrieved key-value pairs as custom claims to the token
+        for (Map.Entry&lt;String, Object&gt; entry : customClaims.entrySet()) {
+            Object claimValue = entry.getValue();
+            if (claimValue == null) {
+                continue;
+            }
+
+            token.getOtherClaims().put(entry.getKey(), claimValue);
+        }
+    }
+
+    private Map&lt;String, Object&gt; fetchCustomClaimsFromApi(String baseEndpointUrl, String userId) {
+        Map&lt;String, Object&gt; customClaims = new HashMap&lt;&gt;();
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Encode the userId to ensure it is URL-safe
+        String encodedUserId = URLEncoder.encode(userId, StandardCharsets.UTF_8);
+        // Construct the complete endpoint URL with the userId as a query parameter
+        String endpointUrl = String.format("%s?objectId=%s", baseEndpointUrl, encodedUserId);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(endpointUrl))
+                .GET()
+                .header("Accept", "application/json")
+                .build();
+
+        try {
+            HttpResponse&lt;String&gt; response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String json = response.body();
+
+            JSONObject jsonResponse = new JSONObject(json);
+            for (String key : jsonResponse.keySet()) {
+                Object value = jsonResponse.get(key);
+                customClaims.put(key, value);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return customClaims;
+    }
+
+}
+</code></pre>
+<h3>4. Register the Protocol Mapper</h3>
+<p>Next, we need to create a <code>META-INF</code> directory and a <code>services</code> directory within it. Inside the services directory, create a file named org.keycloak.protocol.ProtocolMapper.</p>
+<p>Here's the text to add to your <code>lib\src\main\resources\META-INF\services\org.keycloak.protocol.ProtocolMapper</code> file.</p>
+<pre><code class="language-text">com.binnykanjur.keycloak.protocolmapper.RESTfulClaimsProvider
+</code></pre>
+<h3>5. Build the project</h3>
+<p>Now that everything is set up, build the project.</p>
+<p>To build the project, run the following command in the terminal from the project root folder (<code>restful-claims-provider</code>):</p>
+<pre><code class="language-powershell">gradle clean build
+</code></pre>
+<p><strong>Build Output</strong>: After running the build command, you will find the compiled JAR file <strong>keycloak-rest-protocol-mapper-sample-1.0.0.jar</strong> and <strong>json-20240303.jar</strong> in the <code>keycloak/providers</code> directory within the working directory.</p>
+<p>By following these steps, you will have a compiled JAR file &amp; the necessary dependencies ready to be deployed as a custom Keycloak protocol mapper.</p>
+<h2>Configuring Docker Compose for Keycloak and ASP.NET Core API</h2>
+<p>In this section, you will configure Docker Compose to allow external access to Keycloak while restricting access to the REST API. This ensures that Keycloak is accessible for user authentication and management tasks, while the API remains internal and accessible only to services within the Docker network.</p>
+<h3>Key Components of the Docker Compose Setup</h3>
+<ul>
+<li><strong>Services</strong>
+<ul>
+<li><strong>claimsprovider-keycloak</strong>:
+<ul>
+<li><strong>Ports</strong>: Exposes port <code>8080</code> internally and maps it to port <code>5000</code> on the host.</li>
+<li><strong>Command</strong>: <code>start-dev</code> to start Keycloak in development mode.</li>
+<li><strong>Volumes</strong>: Mounts directories from the host to the container. The <code>./keycloak/providers</code> directory is used to include custom protocol mapper providers. Keycloak will automatically detect and deploy the new protocol mapper upon startup.</li>
+<li><strong>Networks</strong>: Connected to both <code>default</code> and <code>internal-network</code> allowing it to be accessed from outside and to communicate with the internal claimsprovider.api service.</li>
+</ul>
+</li>
+<li><strong>claimsprovider.api</strong>:
+<ul>
+<li>Networks: Connected only to <code>internal-network</code>, ensuring it is not accessible from outside the Docker host.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Networks</strong>:
+<ul>
+<li><strong>Internal Network</strong>: <code>internal-network</code> is defined as <em>internal</em>, restricting access to only containers within this network.</li>
+</ul>
+</li>
+</ul>
+<p>Enter the working folder (<code>keycloak-protocol-mapper-sample</code>) &amp; update the <code>docker-compose.yml</code> file content with:</p>
+<pre><code class="language-yml">version: '3.4'
+
+name: keycloak-rest-protocol-mapper-sample
+services:
+  claimsprovider-keycloak:
+    image: quay.io/keycloak/keycloak:25.0.0
+    container_name: claimsprovider-keycloak
+    restart: always
+    ports:
+      - 5000:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command: start-dev
+    volumes:
+      - ./keycloak/providers:/opt/keycloak/providers
+    networks:
+      - default
+      - internal-network
+
+  claimsprovider.api:
+    image: ${DOCKER_REGISTRY-}claimsproviderapi
+    container_name: claimsprovider.api
+    build:
+      context: ClaimsProvider.Api
+      dockerfile: Dockerfile
+    depends_on:
+      - claimsprovider-keycloak
+    networks:
+      - internal-network
+
+networks:
+  internal-network:
+    internal: true
+</code></pre>
+<h2>Configuring Keycloak to Use the Custom Mapper</h2>
+<p>In this section, we'll go through the steps to configure the custom protocol mapper in Keycloak, from running Docker Compose to setting up the realm, user, client, and protocol mapper.</p>
+<h3>1. Run Docker Compose</h3>
+<p><strong>Start the Services</strong>: Run the following command in your terminal to start the Keycloak and ClaimsProvider API services:
+Run Docker Compose</p>
+<pre><code class="language-powershell">docker-compose up -d
+</code></pre>
+<h3>2. Verify the Setup</h3>
+<ol>
+<li>Check Keycloak Admin Console:
+<ul>
+<li>Open your browser and navigate to <a href="http://localhost:5000">http://localhost:5000</a>.</li>
+<li>Log in with the admin credentials (admin/admin).</li>
+<li>Ensure the Keycloak admin console is accessible.</li>
+</ul>
+</li>
+<li>Check Claims Provider API:
+<ul>
+<li>In your browser, navigate to <a href="http://localhost:8080/api/v1/claims?objectId=123">http://localhost:8080/api/v1/claims?objectId=123</a>.</li>
+<li>Confirm that the ClaimsProvider API is <strong>not accessible</strong>.</li>
+</ul>
+</li>
+<li>Check Custom Protocol Mapper Installation:
+<ul>
+<li>After you log in to the <a href="http://localhost:5000">Keycloak console</a> with the admin credentials (admin/admin), make sure you are able to see the newly added <code>oidc-RESTful-claims-mapper</code> in <strong>Provider Info</strong> tabs, <strong>protocol-mapper</strong> section.</li>
+</ul>
+</li>
+</ol>
+<div id="verify-installation-images">
+<script>
+	initImageCarousel({
+            images: [
+                { src: 'Media%2Fkcpm-verify-installation.png', header: 'Verify Setup', text: 'Verifying the Setup' }
+            ],
+            showFullscreenButton: true,
+            showCaptions: false
+        });
+</script>
+</div>
+<h3>3. Set Up Realm, User, and Client</h3>
+<p>In this step, you will create and configure a Realm, User &amp; a Client. For detailed steps, a visual guide is provided below. Navigate through the images to see each step.</p>
+<div id="setup-realm-images">
+<script>
+	initImageCarousel({
+            images: [
+                { src: 'Media%2Fkcpm-create-realm.png', header: 'Create Realm', text: 'Create a Realm named \'sample-realm\'' },
+                { src: 'Media%2Fkcpm-realm-settings-email-option.png', header: 'Configure Realm', text: 'Optional - make email attribute optional' },
+                { src: 'Media%2Fkcpm-create-user.png', header: 'Create User', text: 'Create a user \'sample-realm-user\'' },
+                { src: 'Media%2Fkcpm-create-user-credentials.png', header: 'Set User credentials', text: 'Set password for \'sample-realm-user\'' },
+                { src: 'Media%2Fkcpm-create-client.png', header: 'Create Client', text: 'Create a client \'sample-client\'' },
+                { src: 'Media%2Fkcpm-create-client-general-setti.png', header: 'Create CLient - General Settings', text: 'Set ClientID - \'sample-client\'' },
+                { src: 'Media%2Fkcpm-create-client-capability-co.png', header: 'Create CLient - Capability config', text: 'Set Authentication Flow - \'sample-client\'' },
+                { src: 'Media%2Fkcpm-create-client-login-settings.png', header: 'Create CLient - Login settings', text: 'No settings to be updated here - \'sample-client\'' }
+            ],
+            showFullscreenButton: true,
+            showCaptions: true
+        });
+</script>
+</div>
+<h3>4. Configure Protocol Mapper</h3>
+<p>Now that we have the realm, user &amp; a client created, let us configure our custom mapper within the realm for the <code>sample-client</code> client. A visual guide is also provided below.</p>
+<ul>
+<li>Navigate to the realm <code>sample-realm</code>. This is where we add the custom protocol mapper.</li>
+<li>Go to Clients and select the client <code>sample-client</code>.</li>
+<li>In the client details page, navigate to the Client scopes tab &amp; click on the <code>sample-client-dedicated</code> scope to get into its Dedicated scopes page.</li>
+<li>Select the <code>Mappers</code> tab &amp; Click <code>Configure a new mapper</code>.</li>
+<li>Select <code>RESTful Claims Provider</code> from the <code>Configure a new mapper</code> popup.</li>
+<li>Configure the mapper:
+<ul>
+<li>Mapper Type: This should be the name of our custom protocol mapper - <code>RESTful Claims Provider</code>.</li>
+<li>Name: Give mapper a descriptive name. - <code>oidc-RESTful-claims-mapper</code></li>
+<li>Service URL: Enter the internal URL of the REST endpoint that the mapper will call to retrieve additional claims. - <code>http://claimsprovider.api:8080/api/v1/claims</code>. Here, <strong>claimsprovider.api</strong> is the name of the API container and <strong>8080</strong> is the port it listens on.</li>
+<li>Add to ID token: Turn it <code>Off</code>.</li>
+<li>Add to access token: As we want the claims to be added to the access token, turn it <code>On</code>.</li>
+<li>Add to lightweight access token: Turn it <code>Off</code>.</li>
+<li>Click <code>Save</code>.</li>
+</ul>
+</li>
+</ul>
+<p>Visual Guide: Navigate through the images to see each step.</p>
+<div id="configure-pm-images">
+<script>
+	initImageCarousel({
+            images: [
+                { src: 'Media%2Fkcpm-add-restClaimsProvider-pm1.png', header: 'Client Details', text: 'Navigate into the \'sample-client-dedicated\' client scope' },
+                { src: 'Media%2Fkcpm-add-restClaimsProvider-pm-create.jpg', header: 'Configure a new mapper', text: 'Click the \'Configure a new mapper\' button' },
+                { src: 'Media%2Fkcpm-add-restClaimsProvider-pm2.png', header: 'Configure a new mapper', text: 'Select \'RESTful Claims Provider\' from the popup' },
+                { src: 'Media%2Fkcpm-add-restClaimsProvider-pm3.png', header: 'Add Mapper', text: 'Add mapper details' }
+            ],
+            showFullscreenButton: true,
+            showCaptions: true
+        });
+</script>
+</div>
+<h2>Testing the Integration</h2>
+<p>To make sure the solution working as expected, you will check the generated access token &amp; ensure it contains the claims added by the custom protocol mapper. Refer the image below for details.</p>
+<div id="test-integration-images">
+<script>
+	initImageCarousel({
+            images: [
+                { src: 'Media%2Fkcpm-client-scopes-evaluate.png', header: 'Testing', text: 'Testing the Integration' }
+            ],
+            showFullscreenButton: true,
+            showCaptions: false
+        });
+</script>
+</div>
+<h2>Exporting and Importing Keycloak Configuration</h2>
+<p>This additional section details the steps to export the newly created realm(<code>sample-realm</code>), user, client, and mapper configuration from the running Keycloak container using Docker commands. We'll also document the necessary updates to the <code>docker-compose.yml</code> file to import this exported JSON.</p>
+<h3>Exporting Keycloak Realm</h3>
+<ol>
+<li><strong>Identify the Keycloak Container</strong>:</li>
+</ol>
+<p>First, make sure that the Keycloak container is running by issuing the following command:</p>
+<pre><code class="language-powershell">docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Ports}}"
+</code></pre>
+<p>Look for the container with the name <code>claimsprovider-keycloak</code> and image <code>quay.io/keycloak/keycloak:25.0.0</code>.</p>
+<ol start="2">
+<li><strong>Export the Realm Configuration</strong>:</li>
+</ol>
+<p>Use the following command to export the Keycloak realm configuration to a JSON file:</p>
+<pre><code class="language-powershell">docker exec -u root claimsprovider-keycloak /opt/keycloak/bin/kc.sh export --file /tmp/sample-realm-export.json --realm sample-realm
+</code></pre>
+<ol start="3">
+<li><strong>Copy the Exported JSON File to Host</strong>:</li>
+</ol>
+<p>Once the export is complete, copy the JSON file from the Keycloak container to your host machine.</p>
+<p>Enter the working directory (<code>keycloak-protocol-mapper-sample</code>) &amp; run the following command:</p>
+<pre><code class="language-powershell">mkdir keycloak\data\import
+
+docker cp claimsprovider-keycloak:/tmp/sample-realm-export.json ./keycloak/data/import/sample-realm.json
+</code></pre>
+<h3>Updating <em>docker-compose.yml</em> for Import</h3>
+<p>To ensure the exported configuration is automatically imported when the Keycloak container starts &amp; make your setup process repeatable and consistent, update the docker-compose.yml as follows:</p>
+<ol>
+<li><strong>Add Volume for Import</strong>:</li>
+</ol>
+<p>Ensure there is a volume configuration to map the directory containing the exported JSON file:</p>
+<pre><code class="language-yaml">volumes:
+  - ./keycloak/data/import:/opt/keycloak/data/import
+</code></pre>
+<ol start="2">
+<li><strong>Update Keycloak Service Command</strong>:</li>
+</ol>
+<p>Modify the <code>claimsprovider-keycloak</code> service command to include the import option:</p>
+<pre><code class="language-yaml">command: start-dev --import-realm
+</code></pre>
+<h3><em>docker-compose.yml</em> Update:</h3>
+<pre><code class="language-yaml">version: '3.4'
+
+name: keycloak-rest-protocol-mapper-sample
+services:
+  claimsprovider-keycloak:
+    image: quay.io/keycloak/keycloak:25.0.0
+    container_name: claimsprovider-keycloak
+    restart: always
+    ports:
+      - 5000:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command: start-dev --import-realm
+    volumes:
+      - ./keycloak/data/import:/opt/keycloak/data/import
+      - ./keycloak/providers:/opt/keycloak/providers
+    networks:
+      - default
+      - internal-network
+
+  claimsprovider.api:
+    image: ${DOCKER_REGISTRY-}claimsproviderapi
+    container_name: claimsprovider.api
+    build:
+      context: ClaimsProvider.Api
+      dockerfile: Dockerfile
+    depends_on:
+      - claimsprovider-keycloak
+    networks:
+      - internal-network
+
+networks:
+  internal-network:
+    internal: true
+</code></pre>
+<div id="export-realm-images">
+<script>
+	initImageCarousel({
+            images: [
+                { src: 'Media%2Fexport-realm.png', header: 'Export Realm', text: 'Export Realm - Docker Commands' }
+            ],
+            showFullscreenButton: true,
+            showCaptions: false
+        });
+</script>
+</div>
+<h2>Conclusion</h2>
+<p>In this article, we've walked through the entire process of developing a custom protocol mapper for Keycloak, integrating it with an ASP.NET Core Minimal API, and managing the setup using Docker Compose. Here’s a quick recap of what we covered:</p>
+<ul>
+<li><strong>Creating the ASP.NET Core Minimal API</strong>: We developed an ASP.NET Core Minimal API with a GET <code>/api/v1/claims</code> endpoint that dynamically fetches user claims.</li>
+<li><strong>Building the Custom Protocol Mapper</strong>: Using Gradle, we set up our project, managed dependencies, and built the custom protocol mapper.</li>
+<li><strong>Setting Up the Environment</strong>: We configured Docker Compose to run Keycloak and the ClaimsProvider API, ensuring Keycloak is externally accessible while the API remains internal.</li>
+<li><strong>Deploying and Configuring Keycloak</strong>: We started our services, verified the setup, and configured Keycloak with a realm, user, client, and our custom protocol mapper.</li>
+<li><strong>Exporting and Importing Configuration</strong>: For repeatability and consistency, we demonstrated how to export Keycloak configurations and update the Docker Compose file for automatic imports.</li>
+</ul>
+<p>By following these steps, you can ensure that your Keycloak instance is capable of dynamically fetching and including custom claims in its tokens, tailored to your specific requirements. This setup not only enhances the security and flexibility of your authentication system but also integrates seamlessly with external data sources for real-time claim generation.</p>
+
+                <p></p>
+
+                    <hr>
+                    <h5>Add a comment</h5>
+                    <script src="https://giscus.app/client.js" data-repo="binnykanjur/binnykanjur.github.io.comments" data-repo-id="R_kgDOMFYRhA" data-category="Announcements" data-category-id="DIC_kwDOMFYRhM4Cf4wd" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async="">
+                    </script>
+            </div>
+
+        </div>
+    </article>
+</div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            © 2024 - Binny Kanjur
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/csharp.min.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/syntaxHighlighter.js"></script>
+    <script>
+        highlightSyntax()
+    </script>
+
+</body></html>

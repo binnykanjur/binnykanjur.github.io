@@ -1,0 +1,54 @@
+﻿.highlight-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #f7f7f7;
+}
+
+.highlight-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e6e6e6;
+    border-bottom: 1px solid #ccc;
+}
+
+.highlight-label {
+    margin: 10px;
+}
+
+.copy-button {
+    cursor: pointer;
+    background-color: #e6e6e6;
+    color: black;
+    padding: 10px 15px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    border: none;
+    height: 100%;
+}
+
+    .copy-button svg {
+        margin-right: 5px;
+        height: 16px;
+        width: 16px;
+    }
+
+    .copy-button.copied {
+        background-color: #107c10;
+        color: white;
+    }
+
+    .copy-button:hover {
+        background-color: #e0e0e0;
+        color: black;
+    }
+
+.highlight-code {
+    overflow-x: auto;
+    background-color: #F3F3F3;
+}
+
+pre {
+    margin: 0;
+}

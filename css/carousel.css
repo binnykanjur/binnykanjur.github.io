@@ -1,0 +1,46 @@
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    padding: 20px;
+    transition: opacity 0.5s ease;
+    opacity: 1; /* Default to visible */
+}
+
+    .carousel-caption.hide {
+        opacity: 0;
+    }
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5%;
+}
+
+.carousel-fullscreen {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+}
+
+.fullscreen-btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 1000;
+    background-image: url("data:image/svg+xml,%3Csvg fill='%23808080' height='48px' width='48px' version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 512 512' xml:space='preserve' stroke='%23000000'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Cg%3E%3Cg%3E%3Cpath d='M0,0v512h512V0H0z M195.048,420.571v36.571H54.857v-140.19h36.571v77.762l102.88-102.88l25.86,25.86L117.291,420.571 H195.048z M194.309,220.17L91.429,117.291v77.757H54.857V54.857h140.19v36.571h-77.762L220.169,194.31L194.309,220.17z M457.143,457.143h-140.19v-36.571h77.757l-102.878-102.88l25.86-25.86l102.88,102.883v-77.762h36.571V457.143z M457.143,195.048 h-36.571v-77.757l-102.88,102.88l-25.86-25.86L394.714,91.429h-77.762V54.857h140.19V195.048z'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: none;
+    padding: 20px 20px;
+    cursor: pointer;
+}
+
+.carousel-fullscreen .carousel-inner,
+.carousel-fullscreen .carousel-item,
+.carousel-fullscreen .carousel-item img {
+    height: 100%;
+}
