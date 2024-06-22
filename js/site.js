@@ -41,4 +41,53 @@
         setCookie(cookieName, "closed");
         $cookiesBanner.remove();
     });
+
+    //Back to Top
+    const backToTopButton = document.getElementById("backToTopButton");
+    backToTopButton.addEventListener("click", () => {
+        scrollToTop();
+    });
+
+    window.onscroll = function () { scrollFunction() };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            if (backToTopButton.style.display === 'block') {
+                return;
+            }
+
+            backToTopButton.style.opacity = 0;
+
+            const fadeInAnimation = backToTopButton.animate(
+                [{ opacity: 0 }, { opacity: 1 }],
+                { duration: 400, fill: 'forwards' }
+            );
+
+            fadeInAnimation.onfinish = () => {
+                backToTopButton.style.display = 'block';
+            };
+        } else {
+            if (backToTopButton.style.display === 'none') {
+                return;
+            }
+
+            backToTopButton.style.opacity = 1;
+
+            const fadeOutAnimation = backToTopButton.animate(
+                [{ opacity: 1 }, { opacity: 0 }],
+                { duration: 400, fill: 'forwards' }
+            );
+
+            fadeOutAnimation.onfinish = () => {
+                backToTopButton.style.display = 'none';
+            };
+        }
+    }
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
 })();

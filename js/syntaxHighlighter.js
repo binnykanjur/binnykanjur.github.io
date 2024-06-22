@@ -51,7 +51,6 @@ function loadHighlightJs() {
     });
 }
 
-// Function to set the language label based on the code block class
 function setLanguageLabel(codeBlock) {
     const container = codeBlock.closest('.highlight-container');
     const label = container.querySelector('.highlight-label');
@@ -62,7 +61,6 @@ function setLanguageLabel(codeBlock) {
     }
 }
 
-// Copy to clipboard function
 function enableCopyButtons() {
     document.querySelectorAll('.highlight-container').forEach(container => {
         const copyButton = container.querySelector('.copy-button');
@@ -85,7 +83,6 @@ function enableCopyButtons() {
     });
 }
 
-// Function to wrap the pre>code block with the required HTML structure
 function wrapCodeBlocks() {
     document.querySelectorAll('pre code').forEach(codeBlock => {
         const container = document.createElement('div');

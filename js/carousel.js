@@ -71,7 +71,6 @@ function initializeBootstrapCarousel(carouselContainer, config) {
         img.alt = `${imgData.subtext}`;
         img.className = 'd-block w-100';
 
-        // Add event listener to toggle caption/navigation-buttons & fullScreen-button visibility on image click
         img.addEventListener('click', () => {
             const caption = item.querySelector('.carousel-caption');
             const controls = carouselContainer.querySelectorAll('.carousel-control-prev, .carousel-control-next, .carousel-indicators, .fullscreen-btn');

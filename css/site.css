@@ -10,9 +10,9 @@ a.navbar-brand {
     word-break: break-all;
 }
 
-a {
+/* a {
     color: #0366d6;
-}
+} */
 
 .btn-primary {
     color: #fff;
@@ -28,6 +28,13 @@ a {
 
 .border-top {
     border-top: 1px solid #e5e5e5;
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: none;
 }
 
 .footer {
@@ -73,3 +80,11 @@ article li {
     text-align: center;
     z-index: 1000;
 }
+
+a {
+    text-decoration: none;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
