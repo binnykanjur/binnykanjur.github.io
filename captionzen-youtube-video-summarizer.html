@@ -1,0 +1,257 @@
+<!DOCTYPE html><html lang="en"><head>
+    <!-- Google tag (gtag.js) -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-YHGENZFX76"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-YHGENZFX76');
+    </script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Binny Kanjur - Building CaptionZen: A YouTube Video Summarizer using Microsoft.Extensions.AI and Blazor</title>
+    <meta name="description" content="Learn to build a YouTube video summarizer using Microsoft.Extensions.AI and Blazor. This guide covers transcript extraction, AI-powered summarization, and multi-platform app development.">
+    <meta name="keywords" content="YouTube video summarizer, Microsoft.Extensions.AI, Blazor, C#">
+    <meta name="author" content="Binny Kanjur">
+
+    <link rel="icon" href="/favico.png">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="http://binnykanjur.com/captionzen-youtube-video-summarizer">
+    <meta property="og:title" content="Building CaptionZen: A YouTube Video Summarizer using Microsoft.Extensions.AI and Blazor">
+    <meta property="og:description" content="Learn to build a YouTube video summarizer using Microsoft.Extensions.AI and Blazor. This guide covers transcript extraction, AI-powered summarization, and multi-platform app development.">
+    <meta property="og:image" content="/favico.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="http://binnykanjur.com/captionzen-youtube-video-summarizer">
+    <meta property="twitter:title" content="Building CaptionZen: A YouTube Video Summarizer using Microsoft.Extensions.AI and Blazor">
+    <meta property="twitter:description" content="Learn to build a YouTube video summarizer using Microsoft.Extensions.AI and Blazor. This guide covers transcript extraction, AI-powered summarization, and multi-platform app development.">
+    <meta property="twitter:image" content="/favico.png">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+
+    <link rel="stylesheet" href="css/site.css">
+    <link rel="stylesheet" href="css/carousel.css">
+    <link rel="stylesheet" href="css/syntaxHighlighter.css">
+
+    <script src="js/carousel.js"></script>
+<meta name="generator" content="xSite"></head>
+<body>
+
+    <header>
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a href="/">
+                    <img src="favico.png" style="margin-right:12px;width:32px;height:32px" alt="logo">
+                </a>
+                <a class="navbar-brand" href="/"><b>BINNY</b>KANJUR</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" id="navbarSupportedContent">
+                            <ul class="navbar-nav flex-grow-1">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" href="/">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" href="/xstatic.html">xStatic</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" href="/about.html">About</a>
+                                    </li>
+                            </ul>
+                        </div>
+            </div>
+        </nav>
+    </header>
+
+    <a id="backToTopButton" href="#" class="btn btn-light btn-lg back-to-top" role="button" aria-label="Back To Top">
+        <svg fill="#000000" version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32px" height="32px" viewBox="0 0 32 32" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:none;} </style> <title>up-to-top</title> <polygon points="16,14 6,24 7.4,25.4 16,16.8 24.6,25.4 26,24 "></polygon> <rect x="4" y="8" width="24" height="2"></rect> <rect id="_Transparent_Rectangle_" class="st0" width="32" height="32"></rect> </g></svg>
+    </a>
+
+    <div id="cookieConsent" class="alert alert-info alert-dismissible floatingBottonCookieConsent fade" role="alert">
+        <p>Cookies help us analyze website traffic and improve performance. By using our site, you consent to their use.</p>
+        <button type="button" class="accept-policy close btn btn-outline-primary" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">ACCEPT COOKIES</span>
+        </button>
+    </div>
+
+    
+
+<!-- Post Content Column -->
+
+<div class="container">
+    <article>
+        <div class="row">
+            <div class="col-md-8">
+
+                <!-- Title -->
+                <h1 class="mt-4">Building CaptionZen: A YouTube Video Summarizer using Microsoft.Extensions.AI and Blazor</h1>
+
+                    <!-- Author -->
+                    <p class="lead">
+                        January 6, 2025
+                        by
+                        <a href="#">Binny Kanjur</a>
+                    </p>
+                    <hr>
+
+                <!-- Post Content -->
+                <p class="lead">
+                    </p><p>Generative AI has transformed how we build modern applications, enabling everything from chatbots that improve customer service to code assistants that speed up development. As developers, we're constantly exploring ways to enhance our applications with AI capabilities. Microsoft.Extensions.AI simplifies this process by providing a unified way to interact with various AI providers, letting us focus on building impactful features instead of wrestling with different APIs and implementations.</p>
+<p>In this blog post, we'll explore how to build a YouTube video summarizer using Microsoft.Extensions.AI and Blazor, designed to work seamlessly across platforms—desktop, tablet, or phone. By combining the web capabilities of Blazor with the native strengths of .NET MAUI, CaptionZen offers a multi-platform experience. The summarizer extracts video transcripts and generates concise summaries, enabling users to quickly grasp the key points of videos without watching them in their entirety.</p>
+<h2>TL;DR</h2>
+<p>If you’re keen to try the tool without exploring the implementation details, follow these steps to build and run the application:</p>
+<h3>Prerequisites</h3>
+<ul>
+<li><a href="https://dotnet.microsoft.com/en-us/download/dotnet/9.0">.NET 9.0 SDK</a></li>
+<li>API details for your chosen AI Provider (any one):
+<ul>
+<li><a href="https://platform.openai.com/api-keys"><strong>OpenAI</strong></a> (Recommended): API Key and Model ID.</li>
+<li><a href="https://docs.github.com/en/github-models/prototyping-with-ai-models#experimenting-with-ai-models-using-the-api"><strong>Azure AI Inference</strong></a>: Endpoint URL, API Key, and Model ID.</li>
+<li><a href="https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/create-resource"><strong>Azure OpenAI</strong></a>: Endpoint URL and Model ID.</li>
+<li><a href="https://github.com/ollama/ollama/blob/main/README.md"><strong>Ollama</strong></a>: Endpoint URL and Model ID for local model use.</li>
+</ul>
+</li>
+</ul>
+<h3>Steps to Run the Application</h3>
+<ol>
+<li><p><strong>Clone the Repository</strong></p>
+<pre><code class="language-Console">git clone --branch v1.0 --single-branch https://github.com/binnykanjur/caption-zen.git
+</code></pre>
+<p>Alternatively, download and extract the <a href="https://github.com/binnykanjur/caption-zen/archive/refs/tags/v1.0.zip">source zip</a>.</p>
+</li>
+<li><p><strong>Navigate to the Project Folder</strong></p>
+<pre><code class="language-Console">cd caption-zen/src/CaptionZen.Web
+</code></pre>
+</li>
+<li><p><strong>Set Encryption Keys</strong> CaptionZen encrypts sensitive details like AI Provider keys before storing to the databas. Configure keys for secure data storage:</p>
+<pre><code class="language-Console">dotnet user-secrets set "Encryption:Key" "a8F3kL9mQ2rT5vX1"
+dotnet user-secrets set "Encryption:IV" "Z7pR4sW8nJ6uY3b2"
+</code></pre>
+</li>
+<li><p><strong>Run the Application</strong></p>
+<pre><code class="language-Console">dotnet run
+</code></pre>
+</li>
+<li><p><strong>Summarize a YouTube Video</strong></p>
+</li>
+</ol>
+<div id="evaluate-pm-images">
+<script>
+	initImageCarousel({
+            images: [
+                { src: 'Media%2Fupdate-ai-provider-settings.jpg', header: 'Update Settings', text: 'Configure AI Provider' },
+                { src: 'Media%2FCaptionZen.jpg', header: 'CaptionZen', text: 'Video Thumbnail' }
+            ],
+            showFullscreenButton: true,
+            showCaptions: false
+        });
+</script>
+</div>
+<ul>
+<li><p><strong>Update Settings</strong>: Provide your AI provider details.</p>
+<ul>
+<li>Click <svg width="24" height="24">
+<path d="M12.01 2.25c.74 0 1.47.1 2.18.25.32.07.55.33.59.65l.17 1.53a1.38 1.38 0 0 0 1.92 1.11l1.4-.61c.3-.13.64-.06.85.17a9.8 9.8 0 0 1 2.2 3.8c.1.3 0 .63-.26.82l-1.25.92a1.38 1.38 0 0 0 0 2.22l1.25.92c.26.19.36.52.27.82a9.8 9.8 0 0 1-2.2 3.8.75.75 0 0 1-.85.17l-1.4-.62a1.38 1.38 0 0 0-1.93 1.12l-.17 1.52a.75.75 0 0 1-.58.65 9.52 9.52 0 0 1-4.4 0 .75.75 0 0 1-.57-.65l-.17-1.52a1.38 1.38 0 0 0-1.93-1.11l-1.4.62a.75.75 0 0 1-.85-.18 9.8 9.8 0 0 1-2.2-3.8c-.1-.3 0-.63.26-.82l1.25-.92a1.38 1.38 0 0 0 0-2.22l-1.24-.92a.75.75 0 0 1-.28-.82 9.8 9.8 0 0 1 2.2-3.8c.23-.23.57-.3.86-.17l1.4.62c.4.17.86.15 1.25-.08.38-.22.63-.6.68-1.04l.17-1.53a.75.75 0 0 1 .58-.65c.72-.16 1.45-.24 2.2-.25Zm0 1.5c-.45 0-.9.04-1.35.12l-.11.97a2.89 2.89 0 0 1-4.03 2.33l-.9-.4A8.3 8.3 0 0 0 4.29 9.1l.8.59a2.88 2.88 0 0 1 0 4.64l-.8.59a8.3 8.3 0 0 0 1.35 2.32l.9-.4a2.88 2.88 0 0 1 4.02 2.32l.1.99c.9.15 1.8.15 2.7 0l.1-.99a2.88 2.88 0 0 1 4.02-2.32l.9.4a8.3 8.3 0 0 0 1.35-2.32l-.8-.59a2.88 2.88 0 0 1 0-4.64l.8-.59a8.3 8.3 0 0 0-1.35-2.32l-.9.4a2.88 2.88 0 0 1-4.02-2.32l-.1-.98c-.45-.08-.9-.11-1.34-.12ZM12 8.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z"></path>
+</svg> in the sidebar to open up the Settings pane.</li>
+<li>Select the AI Provider from the <strong>AI Providers</strong> dropdown list.</li>
+<li>Enter the details required by the AI Provider.</li>
+<li>Close the Settings pane.</li>
+</ul>
+</li>
+<li><p><strong>Enter Video URL</strong>: Input the YouTube video URL to extract its thumbnail and title.</p>
+</li>
+<li><p><strong>Summarize</strong>: Click the summarize button to generate a concise summary.</p>
+</li>
+</ul>
+<h2>Architecture</h2>
+<p>In this section we go into some of the core implementation details of CaptionZen, focusing mainly on persistence, core services, and key workflows.</p>
+<h3>Persistence</h3>
+<p>CaptionZen uses <strong>EFCore</strong> with <strong>SQLite</strong> to store settings, AI provider configurations, chat histories, and messages. Key tables include:</p>
+<ol>
+<li><strong>Setting</strong>: Stores application-specific configurations and encrypted API keys.</li>
+<li><strong>AiProvider</strong>: Contains AI provider-specific details like endpoint URLs and model IDs.</li>
+<li><strong>Chat</strong>: Maintains a list of conversations or summarizations.</li>
+<li><strong>ChatMessage</strong>: Captures user and AI responses within chats.</li>
+</ol>
+<p>The persistence layer is built around a custom DbContext, implemented in: <code>/src/CaptionZen.Shared/Services/CaptionZenDbContext.cs</code>. The database structure follows a clear relational design, illustrated in the diagram below:<br>
+<img src="Media/CaptionZen-ERD.png" alt="CaptionZen - Entity Relationship Diagram"></p>
+<h3>Core Services</h3>
+<p>CaptionZen relies on several key services to perform its core functionalities. These services encapsulate core logic, interact with external APIs (AI provider, YouTube), and integrate with the persistence layer. All core services are registered with the DI container through the <em>AddCaptionZenServices</em> method in
+<code>/src/CaptionZen.Shared/ServiceCollectionExtensions.cs</code></p>
+<h4><code>ISettingsService</code></h4>
+<p>Manages AI provider API keys and user preferences securely. Since we support both web and native platforms, we've implemented it in two ways:</p>
+<ul>
+<li><strong>Web Implementation</strong>: Uses SQLite for storage (<code>/src/CaptionZen.Shared/Services/DbSettingsService.cs</code>).</li>
+<li><strong>MAUI Implementation</strong>: Leverages platform-native storage mechanisms (<code>/src/CaptionZen.Maui/Services/SettingsService.cs</code>).</li>
+</ul>
+<h4><code>IYouTubeService</code></h4>
+<p>Handles Video details (title, description, thumbnail) &amp; transcript/captions extraction. Implementation: <code>/src/CaptionZen.Shared/Services/ScraperYouTubeService.cs</code>.</p>
+<p>⚠️ <strong>A Word of Caution:</strong> We're using <a href="https://github.com/kelter-antunes/youtube-transcript-api-sharp">Kelter.Forks.YoutubeTranscriptApi</a> to grab video transcripts. This is an unofficial library that scrapes YouTube pages - which means it's not the most stable solution. In a production environment,  consider using any of the following:</p>
+<ul>
+<li><strong>YouTube's official Data API</strong>: <code>/src/CaptionZen.Shared/Services/GoogleYouTubeService.cs</code> can serve as a good starting point. However, please note that this functionality may be limited to videos you've uploaded rather than working with all YouTube videos.</li>
+<li><a href="https://www.searchapi.io/"><strong>SearchApi</strong></a>: Use the <a href="https://www.searchapi.io/youtube">YouTube Api</a> to extract the Subtitles.</li>
+</ul>
+<h4><code>ICaptionZenService</code></h4>
+<p>This service is the central service that orchestrates interactions with AI providers, manages chats, and integrates with other services.</p>
+<ul>
+<li><strong>AI Integration</strong>: Interfaces with Microsoft.Extensions.AI to process transcripts.</li>
+<li><strong>Chat Management</strong>: Maintains session histories.</li>
+<li><strong>Workflow Orchestration</strong>: Coordinates between <code>ISettingsService</code> and <code>IYouTubeService</code>.</li>
+</ul>
+<p>Implementation: <code>/src/CaptionZen.Shared/Services/CaptionZenService.cs</code>.</p>
+<h2>Prompts Usage</h2>
+<p>Prompts play a crucial role in generating summaries tailored to user needs. CaptionZen leverages <a href="https://github.com/danielmiessler/fabric">Fabric</a> patterns in the application. Specifically, the <a href="https://github.com/danielmiessler/fabric/blob/main/patterns/extract_wisdom/system.md"><code>extract_wisdom</code></a> system prompt is used to extract insightful and concise summaries from video transcripts.</p>
+<h2>Implementation Highlights</h2>
+<h3>Key Workflows</h3>
+<h4>Video Thumbnail Rendering</h4>
+<p>Extracts and displays video metadata (e.g., title, thumbnail) from YouTube URLs.
+<img src="Media/captionZen-display-video-card.png" alt="Render YouTube Video Thumbnail"></p>
+<h4>Summarization Process</h4>
+<ol>
+<li>Fetch video transcripts.</li>
+<li>Send the transcript to the configured AI provider.</li>
+<li>Receive and display the summary in the UI.</li>
+</ol>
+<p><img src="Media/captionZen-summarize-video.png" alt="Summarize YouTube Video"></p>
+<h2>Conclusion</h2>
+<p>This project demonstrates how to integrate AI features into Blazor applications using Microsoft.Extensions.AI. CaptionZen's multi-platform support through .NET MAUI Blazor Hybrid ensures seamless functionality across Android, iOS, Mac, Windows, and Web, providing a unified experience for diverse use cases. By combining transcript extraction with structured prompts and AI responses, CaptionZen provides a practical solution for summarizing YouTube videos.</p>
+<p>The approach balances simplicity (e.g., SQLite for persistence) and flexibility (e.g., multi-provider AI integration), making it adaptable to other content-processing workflows. Explore the <a href="https://github.com/binnykanjur/caption-zen">CaptionZen GitHub repository</a> for more details on the implementation and to experiment with building similar tools.</p>
+
+                <p></p>
+
+                    <hr>
+                    <h5>Add a comment</h5>
+                    <script src="https://giscus.app/client.js" data-repo="binnykanjur/binnykanjur.github.io.comments" data-repo-id="R_kgDOMFYRhA" data-category="Announcements" data-category-id="DIC_kwDOMFYRhM4Cf4wd" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async="">
+                    </script>
+            </div>
+
+        </div>
+    </article>
+</div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            © 2025 - Binny Kanjur
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/csharp.min.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/syntaxHighlighter.js"></script>
+    <script>
+        highlightSyntax()
+    </script>
+
+</body></html>

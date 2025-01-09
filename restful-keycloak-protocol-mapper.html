@@ -447,10 +447,8 @@ public class RESTfulClaimsProvider extends AbstractOIDCProtocolMapper
             return;
         }
 
-        // Fetch data from the remote GET endpoint using the authenticated user's ID
         Map&lt;String, Object&gt; customClaims = fetchCustomClaimsFromApi(serviceUrl, userId);
 
-        // Add the retrieved key-value pairs as custom claims to the token
         for (Map.Entry&lt;String, Object&gt; entry : customClaims.entrySet()) {
             Object claimValue = entry.getValue();
             if (claimValue == null) {
@@ -465,9 +463,8 @@ public class RESTfulClaimsProvider extends AbstractOIDCProtocolMapper
         Map&lt;String, Object&gt; customClaims = new HashMap&lt;&gt;();
         HttpClient client = HttpClient.newHttpClient();
 
-        // Encode the userId to ensure it is URL-safe
         String encodedUserId = URLEncoder.encode(userId, StandardCharsets.UTF_8);
-        // Construct the complete endpoint URL with the userId as a query parameter
+        
         String endpointUrl = String.format("%s?objectId=%s", baseEndpointUrl, encodedUserId);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -788,7 +785,7 @@ networks:
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            © 2024 - Binny Kanjur
+            © 2025 - Binny Kanjur
         </div>
     </footer>
 
