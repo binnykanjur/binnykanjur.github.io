@@ -108,6 +108,7 @@
                     </p><p>Generative AI has transformed how we build modern applications, enabling everything from chatbots that improve customer service to code assistants that speed up development. As developers, we're constantly exploring ways to enhance our applications with AI capabilities. Microsoft.Extensions.AI simplifies this process by providing a unified way to interact with various AI providers, letting us focus on building impactful features instead of wrestling with different APIs and implementations.</p>
 <p>In this blog post, we'll explore how to build a YouTube video summarizer using Microsoft.Extensions.AI and Blazor, designed to work seamlessly across platforms—desktop, tablet, or phone. By combining the web capabilities of Blazor with the native strengths of .NET MAUI, CaptionZen offers a multi-platform experience. The summarizer extracts video transcripts and generates concise summaries, enabling users to quickly grasp the key points of videos without watching them in their entirety.</p>
 <h2>TL;DR</h2>
+<hr>
 <p>If you’re keen to try the tool without exploring the implementation details, follow these steps to build and run the application:</p>
 <h3>Prerequisites</h3>
 <ul>
@@ -142,20 +143,6 @@ dotnet user-secrets set "Encryption:IV" "Z7pR4sW8nJ6uY3b2"
 </code></pre>
 </li>
 <li><p><strong>Summarize a YouTube Video</strong></p>
-</li>
-</ol>
-<div id="evaluate-pm-images">
-<script>
-	initImageCarousel({
-            images: [
-                { src: 'Media%2Fupdate-ai-provider-settings.jpg', header: 'Update Settings', text: 'Configure AI Provider' },
-                { src: 'Media%2FCaptionZen.jpg', header: 'CaptionZen', text: 'Video Thumbnail' }
-            ],
-            showFullscreenButton: true,
-            showCaptions: false
-        });
-</script>
-</div>
 <ul>
 <li><p><strong>Update Settings</strong>: Provide your AI provider details.</p>
 <ul>
@@ -172,7 +159,10 @@ dotnet user-secrets set "Encryption:IV" "Z7pR4sW8nJ6uY3b2"
 <li><p><strong>Summarize</strong>: Click the summarize button to generate a concise summary.</p>
 </li>
 </ul>
+</li>
+</ol>
 <h2>Architecture</h2>
+<hr>
 <p>In this section we go into some of the core implementation details of CaptionZen, focusing mainly on persistence, core services, and key workflows.</p>
 <h3>Persistence</h3>
 <p>CaptionZen uses <strong>EFCore</strong> with <strong>SQLite</strong> to store settings, AI provider configurations, chat histories, and messages. Key tables include:</p>
@@ -182,25 +172,35 @@ dotnet user-secrets set "Encryption:IV" "Z7pR4sW8nJ6uY3b2"
 <li><strong>Chat</strong>: Maintains a list of conversations or summarizations.</li>
 <li><strong>ChatMessage</strong>: Captures user and AI responses within chats.</li>
 </ol>
-<p>The persistence layer is built around a custom DbContext, implemented in: <code>/src/CaptionZen.Shared/Services/CaptionZenDbContext.cs</code>. The database structure follows a clear relational design, illustrated in the diagram below:<br>
-<img src="Media/CaptionZen-ERD.png" alt="CaptionZen - Entity Relationship Diagram"></p>
+<p>The persistence layer is built around a custom DbContext, implemented in: <code>/src/CaptionZen.Shared/Services/CaptionZenDbContext.cs</code>. The database structure follows a clear relational design, illustrated in the diagram below:</p>
+<div id="evaluate-pm-images">
+<script>
+	initImageCarousel({
+            images: [
+                { src: 'Media%2FCaptionZen-ERD.png', header: 'CaptionZen - Entity Relationship Diagram', text: 'CaptionZen - Entity Relationship Diagram' }
+            ],
+            showFullscreenButton: true,
+            showCaptions: false
+        });
+</script>
+</div>
 <h3>Core Services</h3>
 <p>CaptionZen relies on several key services to perform its core functionalities. These services encapsulate core logic, interact with external APIs (AI provider, YouTube), and integrate with the persistence layer. All core services are registered with the DI container through the <em>AddCaptionZenServices</em> method in
 <code>/src/CaptionZen.Shared/ServiceCollectionExtensions.cs</code></p>
-<h4><code>ISettingsService</code></h4>
+<h4>ISettingsService</h4>
 <p>Manages AI provider API keys and user preferences securely. Since we support both web and native platforms, we've implemented it in two ways:</p>
 <ul>
 <li><strong>Web Implementation</strong>: Uses SQLite for storage (<code>/src/CaptionZen.Shared/Services/DbSettingsService.cs</code>).</li>
 <li><strong>MAUI Implementation</strong>: Leverages platform-native storage mechanisms (<code>/src/CaptionZen.Maui/Services/SettingsService.cs</code>).</li>
 </ul>
-<h4><code>IYouTubeService</code></h4>
+<h4>IYouTubeService</h4>
 <p>Handles Video details (title, description, thumbnail) &amp; transcript/captions extraction. Implementation: <code>/src/CaptionZen.Shared/Services/ScraperYouTubeService.cs</code>.</p>
 <p>⚠️ <strong>A Word of Caution:</strong> We're using <a href="https://github.com/kelter-antunes/youtube-transcript-api-sharp">Kelter.Forks.YoutubeTranscriptApi</a> to grab video transcripts. This is an unofficial library that scrapes YouTube pages - which means it's not the most stable solution. In a production environment,  consider using any of the following:</p>
 <ul>
-<li><strong>YouTube's official Data API</strong>: <code>/src/CaptionZen.Shared/Services/GoogleYouTubeService.cs</code> can serve as a good starting point. However, please note that this functionality may be limited to videos you've uploaded rather than working with all YouTube videos.</li>
+<li><a href="https://developers.google.com/youtube/v3"><strong>YouTube's official Data API</strong></a>: <code>/src/CaptionZen.Shared/Services/GoogleYouTubeService.cs</code> can serve as a good starting point. However, please note that this functionality may be limited to videos you've uploaded rather than working with all YouTube videos.</li>
 <li><a href="https://www.searchapi.io/"><strong>SearchApi</strong></a>: Use the <a href="https://www.searchapi.io/youtube">YouTube Api</a> to extract the Subtitles.</li>
 </ul>
-<h4><code>ICaptionZenService</code></h4>
+<h4>ICaptionZenService</h4>
 <p>This service is the central service that orchestrates interactions with AI providers, manages chats, and integrates with other services.</p>
 <ul>
 <li><strong>AI Integration</strong>: Interfaces with Microsoft.Extensions.AI to process transcripts.</li>
@@ -209,20 +209,43 @@ dotnet user-secrets set "Encryption:IV" "Z7pR4sW8nJ6uY3b2"
 </ul>
 <p>Implementation: <code>/src/CaptionZen.Shared/Services/CaptionZenService.cs</code>.</p>
 <h2>Prompts Usage</h2>
+<hr>
 <p>Prompts play a crucial role in generating summaries tailored to user needs. CaptionZen leverages <a href="https://github.com/danielmiessler/fabric">Fabric</a> patterns in the application. Specifically, the <a href="https://github.com/danielmiessler/fabric/blob/main/patterns/extract_wisdom/system.md"><code>extract_wisdom</code></a> system prompt is used to extract insightful and concise summaries from video transcripts.</p>
 <h2>Implementation Highlights</h2>
+<hr>
 <h3>Key Workflows</h3>
 <h4>Video Thumbnail Rendering</h4>
-<p>Extracts and displays video metadata (e.g., title, thumbnail) from YouTube URLs.
-<img src="Media/captionZen-display-video-card.png" alt="Render YouTube Video Thumbnail"></p>
+<p>Extracts and displays video metadata (e.g., title, thumbnail) from YouTube URLs.</p>
+<div id="evaluate-pm-images">
+<script>
+	initImageCarousel({
+            images: [
+                { src: 'Media%2FcaptionZen-display-video-card.png', header: 'Render YouTube Video Thumbnail', text: 'Render YouTube Video Thumbnail' }
+            ],
+            showFullscreenButton: true,
+            showCaptions: false
+        });
+</script>
+</div>
 <h4>Summarization Process</h4>
 <ol>
 <li>Fetch video transcripts.</li>
 <li>Send the transcript to the configured AI provider.</li>
 <li>Receive and display the summary in the UI.</li>
 </ol>
-<p><img src="Media/captionZen-summarize-video.png" alt="Summarize YouTube Video"></p>
+<div id="evaluate-pm-images">
+<script>
+	initImageCarousel({
+            images: [
+                { src: 'Media%2FcaptionZen-summarize-video.png', header: 'Summarize YouTube Video', text: 'Summarize YouTube Video' }
+            ],
+            showFullscreenButton: true,
+            showCaptions: false
+        });
+</script>
+</div>
 <h2>Conclusion</h2>
+<hr>
 <p>This project demonstrates how to integrate AI features into Blazor applications using Microsoft.Extensions.AI. CaptionZen's multi-platform support through .NET MAUI Blazor Hybrid ensures seamless functionality across Android, iOS, Mac, Windows, and Web, providing a unified experience for diverse use cases. By combining transcript extraction with structured prompts and AI responses, CaptionZen provides a practical solution for summarizing YouTube videos.</p>
 <p>The approach balances simplicity (e.g., SQLite for persistence) and flexibility (e.g., multi-provider AI integration), making it adaptable to other content-processing workflows. Explore the <a href="https://github.com/binnykanjur/caption-zen">CaptionZen GitHub repository</a> for more details on the implementation and to experiment with building similar tools.</p>
 
