@@ -97,7 +97,7 @@
 
                     <!-- Author -->
                     <p class="lead">
-                        January 6, 2025
+                        January 10, 2025
                         by
                         <a href="#">Binny Kanjur</a>
                     </p>
@@ -105,7 +105,8 @@
 
                 <!-- Post Content -->
                 <p class="lead">
-                    </p><p>Generative AI has transformed how we build modern applications, enabling everything from chatbots that improve customer service to code assistants that speed up development. As developers, we're constantly exploring ways to enhance our applications with AI capabilities. Microsoft.Extensions.AI simplifies this process by providing a unified way to interact with various AI providers, letting us focus on building impactful features instead of wrestling with different APIs and implementations.</p>
+                    <img src="Media/CaptionZen.jpg" alt="CaptionZen" style="max-width:100%; height: auto;">
+</p><p>Generative AI has transformed how we build modern applications, enabling everything from chatbots that improve customer service to code assistants that speed up development. As developers, we're constantly exploring ways to enhance our applications with AI capabilities. Microsoft.Extensions.AI simplifies this process by providing a unified way to interact with various AI providers, letting us focus on building impactful features instead of wrestling with different APIs and implementations.</p>
 <p>In this blog post, we'll explore how to build a YouTube video summarizer using Microsoft.Extensions.AI and Blazor, designed to work seamlessly across platforms—desktop, tablet, or phone. By combining the web capabilities of Blazor with the native strengths of .NET MAUI, CaptionZen offers a multi-platform experience. The summarizer extracts video transcripts and generates concise summaries, enabling users to quickly grasp the key points of videos without watching them in their entirety.</p>
 <h2>TL;DR</h2>
 <hr>
@@ -133,7 +134,7 @@
 <pre><code class="language-Console">cd caption-zen/src/CaptionZen.Web
 </code></pre>
 </li>
-<li><p><strong>Set Encryption Keys</strong> CaptionZen encrypts sensitive details like AI Provider keys before storing to the databas. Configure keys for secure data storage:</p>
+<li><p><strong>Set Encryption Keys</strong> CaptionZen encrypts sensitive details like AI Provider keys before storing to the database. Configure keys for secure data storage:</p>
 <pre><code class="language-Console">dotnet user-secrets set "Encryption:Key" "a8F3kL9mQ2rT5vX1"
 dotnet user-secrets set "Encryption:IV" "Z7pR4sW8nJ6uY3b2"
 </code></pre>
